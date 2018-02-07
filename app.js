@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
@@ -7,63 +9,106 @@ mongoose.connect('mongodb://localhost:27017/bot-dev', function () {
 
 });
 
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var mongo = require(path.resolve('./engine2/utils/mongo-wrapper.js'));
 
-var ReservationSchema = new Schema({
-    "order_name": "String",
-    "order_mobile": "String",
-    "order_itemname": "String",
-    "order_itemcode": "String",
-    "order_date": "String",
-    "order_hour": "String",
-    "order_receivername":"String",
-    "order_receivermobile": "String",
-    "order_receiveraddress": "String",
-    "order_deliverydate": "String",
-    "order_deliveryhour": "String",
-    "order_greeting":"String",
-    "order_sendername":"String",
-    "order_status":"String",
-    "order_time" : "String",
-    "order_price" : "Number",
-    "order_itemimage" : "String",
-    "order_itemnumber" : "Number",
-    "order_email" : "String",
-    "order_bride" : "String",
-    "order_showtime" : "String",
-    "order_deliveryway" : "String",
-    "order_decorateway" : "String",
-    "order_bill" : "String",
-    "order_payway" : "String",
-    "order_allprice" :"Number",
-    "order_deliverytime" : "String",
-    "order_otherrequire" : "String"
+
+var flower_faqSchema = new Schema({
+    "botId" : "String",
+    "category": "String",
+    "question": "String",
+    "answer": "String"
 });
 
-var categorySchema = new Schema({
-    "category" : "String",
-    "name" : "String",
-    "price" : "Number",
-    "picture" : "String",
-    "description" : "String",
-    "code" : "String",
-    "sale_price" : "Number",
-    "delivery" : "String",
-    "VIP" : "String",
+
+var flower_categorySchema = new Schema({
+    "botId" : "String",
+    "category": "String",
+    "name": "String",
+    "price": "String",//old:"Number"
+    "picture": "String",
+    "description": "String",
+    "code": "String",
+    "sale_price": "String",//old:"Number"
+    "delivery": "String",
+    "VIP": "String",
+    "status": "String"
+});
+
+
+var flower_reservationSchema = new Schema({
+    "botId" : "String",
+    "name": "String",
+    "mobile": "String",
+    "itemname": "String",
+    "itemcode": "String",
+    "date": "String",
+    "hour": "String",
+    "time": "String",
+    "receivername": "String",
+    "receivermobile": "String",
+    "receiveraddress": "String",
+    "deliverydate": "String",
+    "deliveryhour": "String",
+    "deliverytime": "String",
+    "greeting": "String",
+    "sendername": "String",
+    "status": "String",
+    "price": "String", //old:"Number"
+    "itemimage": "String",
+    "itemnumber": "Number",
+    "email": "String",
+    "bride": "String",
+    "showtime": "String",
+    "deliveryway": "String",
+    "decorateway": "String",
+    "bill": "String",
+    "payway": "String",
+    "allprice": "String",//old:"Number"
+    "otherrequire": "String"
+});
+
+
+var flower_basicSchema = new Schema({
+    "botId":"String",
+    "flowername" : "String",
+    "phone" : "String",
+    "mobile" : "String",
+    "address" : "String",
+    "startTime" : "String",
+    "endTime" : "String",
+    "holiday" : "String",
+    "image" : "String",
+    "description" : "String"
+});
+
+
+var flower_eventSchema = new Schema({
+    "botId":"String",
+    "name": "String",
+    "context": "String",
+    "description": "String",
+    "picture": "String",
     "status":"String"
 });
 
-var faqSchema = new Schema({
-    "category" : "String",
-    "question" :"String",
-    "answer" : "String"
+
+var flower_serviceSchema = new Schema({
+    "botId":"String",
+    "topic": "String",
+    "name": "String",
+    "description": "String",
+    "picture": "String",
+    "status":"String"
 });
 
-
-var Order = mongoose.model('flower-reservations', ReservationSchema);
-var category = mongoose.model('flower-categories', categorySchema);
-var faq = mongoose.model('flower-faqs', faqSchema);
-
-
+// var faq = mongo.model('flower_faq', flower_faqSchema);
+// var category = mongo.model('flower_category', flower_categorySchema);
+// var order = mongo.model('flower_reservation', flower_reservationSchema);
+// var basic = mongo.model('flower_basic', flower_basicSchema);
+// var event = mongo.model('flower_event', flower_eventSchema);
+// var service = mongo.model('flower_service', flower_serviceSchema);
 
 
 
@@ -83,10 +128,7 @@ app.post('/api/:model/create', function (req, res) {
     else
         Model = mongoose.model(req.params.model, req.params.model + 'Schema');
 
-    console.log(req);
-	
     var model = new Model(req.body);
-
 
     model.save(function (err, doc) {
         if(err)

@@ -9,16 +9,18 @@ mongoose.connect('mongodb://localhost:27017/bot-dev', function () {
 
 });
 
+var models = {};
+
 // var mongoose = require('mongoose');
 // var Schema = mongoose.Schema;
-var flower_testSchema = new Schema({
+models.flower_testSchema = new Schema({
     "botId" : "String",
     "name": "String",
     "age": "String",
     "sex": "String"
 });
 
-var flower_faqSchema = new Schema({
+models.flower_faqSchema = new Schema({
     "botId" : "String",
     "category": "String",
     "question": "String",
@@ -26,7 +28,7 @@ var flower_faqSchema = new Schema({
 });
 
 
-var flower_categorySchema = new Schema({
+models.flower_categorySchema = new Schema({
     "botId" : "String",
     "category": "String",
     "name": "String",
@@ -41,7 +43,7 @@ var flower_categorySchema = new Schema({
 });
 
 
-var flower_reservationSchema = new Schema({
+models.flower_reservationSchema = new Schema({
     "botId" : "String",
     "name": "String",
     "mobile": "String",
@@ -74,7 +76,7 @@ var flower_reservationSchema = new Schema({
 });
 
 
-var flower_basicSchema = new Schema({
+models.flower_basicSchema = new Schema({
     "botId":"String",
     "flowername" : "String",
     "phone" : "String",
@@ -88,7 +90,7 @@ var flower_basicSchema = new Schema({
 });
 
 
-var flower_eventSchema = new Schema({
+models.flower_eventSchema = new Schema({
     "botId":"String",
     "name": "String",
     "context": "String",
@@ -98,7 +100,7 @@ var flower_eventSchema = new Schema({
 });
 
 
-var flower_serviceSchema = new Schema({
+models.flower_serviceSchema = new Schema({
     "botId":"String",
     "topic": "String",
     "name": "String",
@@ -130,7 +132,10 @@ app.post('/api/:model/create', function (req, res) {
     if(mongoose.models[req.params.model])
         Model =  mongoose.model(req.params.model);
     else
-        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
+        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
+
+    console.log('테스트 : ', req.json);
+    console.log('asdf : ', req.body);
 
     var model = new Model(req.json);
     model.save(function (err, doc) {
@@ -151,7 +156,7 @@ app.get('/api/:model/read', function (req, res) {
     }
     else
     {
-        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
+        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
     }
 
     Model.find(req.json).lean().exec(function(err,docs){
@@ -172,7 +177,7 @@ app.post('/api/:model/update', function (req, res) {
     }
     else
     {
-        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
+        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
     }
 
     Model.find(req.body).exec(function(err,docs){
@@ -196,7 +201,7 @@ app.post('/api/:model/delete', function (req, res) {
     }
     else
     {
-        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
+        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
     }
 
     Model.remove(req.body).exec(function(err,docs){

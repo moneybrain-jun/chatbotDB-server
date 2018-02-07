@@ -125,7 +125,7 @@ app.post('/api/:model/create', function (req, res) {
     if(mongoose.models[req.params.model])
         Model =  mongoose.model(req.params.model);
     else
-        Model = mongoose.model(req.params.model, req.params.model + 'Schema');
+        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
 
     var model = new Model(req.json);
 
@@ -147,10 +147,10 @@ app.get('/api/:model/read', function (req, res) {
     }
     else
     {
-        Model = mongoose.model(req.params.model, req.params.model + 'Schema');
+        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
     }
 
-    Model.find(req.json.query).lean().exec(function(err,docs){
+    Model.find(req.json).lean().exec(function(err,docs){
         if(err)
         {
             console.log(err);
@@ -158,7 +158,6 @@ app.get('/api/:model/read', function (req, res) {
         console.log(docs);
         res.json(docs);
     });
-
 });
 
 app.post('/api/:model/update', function (req, res) {
@@ -169,7 +168,7 @@ app.post('/api/:model/update', function (req, res) {
     }
     else
     {
-        Model = mongoose.model(req.params.model, req.params.model + 'Schema');
+        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
     }
 
     Model.find(req.body).exec(function(err,docs){
@@ -193,7 +192,7 @@ app.post('/api/:model/delete', function (req, res) {
     }
     else
     {
-        Model = mongoose.model(req.params.model, req.params.model + 'Schema');
+        Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
     }
 
     Model.remove(req.body).exec(function(err,docs){

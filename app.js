@@ -118,65 +118,71 @@ models.flower_serviceSchema = new Schema({
 // var event = mongo.model('flower_event', flower_eventSchema);
 // var service = mongo.model('flower_service', flower_serviceSchema);
 
-
-
-app.post('/api/:model/create', function (req, res) {
-    var Model;
-    if(mongoose.models[req.params.model])
-        Model =  mongoose.model(req.params.model);
+var getModel = function(modelName)
+{
+    if(mongoose.models[modelName])
+    {
+        return mongoose.model(modelName);
+    }
     else
-        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
+    {
+        return mongoose.model(modelName, models[modelName + 'Schema']);
+    }
+};
 
-    console.log('테스트 : ', req.json);
-    console.log('asdf : ', req.body);
 
-    var model = new Model(req.json);
-    model.save(function (err, doc) {
+
+app.post('/api/:model', function (req, res)
+{
+    var Model = getModel(req.params.model);
+
+    var model = new Model(req.body);
+    model.save(function (err, doc)
+    {
         if(err)
         {
             console.log(err);
+            return res.status(500).send({ error: err });
         }
+
         console.log(doc);
         res.json(doc);
     });
 });
 
-app.get('/api/:model/read', function (req, res) {
-    var Model;
-    if(mongoose.models[req.params.model])
+app.get('/api/:model', function (req, res)
+{
+    var Model = getModel(req.params.model);
+
+    var query = {};
+    for(var key in req.query)
     {
-        Model =  mongoose.model(req.params.model);
-    }
-    else
-    {
-        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
+        query[key] = req.query[key];
     }
 
-    Model.find(req.json).lean().exec(function(err,docs){
+    Model.find(query).lean().exec(function(err, docs)
+    {
         if(err)
         {
             console.log(err);
+            return res.status(500).send({ error: err });
         }
+
         console.log(docs);
         res.json(docs);
     });
 });
 
-app.post('/api/:model/update', function (req, res) {
-    var Model;
-    if(mongoose.models[req.params.model])
-    {
-        Model =  mongoose.model(req.params.model);
-    }
-    else
-    {
-        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
-    }
+app.put('/api/:model', function (req, res)
+{
+    var Model = getModel(req.params.model);
 
-    Model.find(req.body).exec(function(err,docs){
+    Model.find(req.body).exec(function(err, docs)
+    {
         if(err)
         {
             console.log(err);
+            return res.status(500).send({ error: err });
         }
 
         console.log(docs);
@@ -186,22 +192,17 @@ app.post('/api/:model/update', function (req, res) {
 
 });
 
-app.post('/api/:model/delete', function (req, res) {
-    var Model;
-    if(mongoose.models[req.params.model])
+app.delete('/api/:model', function (req, res)
+{
+    var Model = getModel(req.params.model);
+    Model.remove(req.body).exec(function(err, docs)
     {
-        Model =  mongoose.model(req.params.model);
-    }
-    else
-    {
-        Model = mongoose.model(req.params.model, models[req.params.model + 'Schema']);
-    }
-
-    Model.remove(req.body).exec(function(err,docs){
         if(err)
         {
             console.log(err);
+            return res.status(500).send({ error: err });
         }
+
         console.log(docs);
         res.json(docs);
     });

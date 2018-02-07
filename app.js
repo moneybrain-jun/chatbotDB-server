@@ -11,7 +11,6 @@ mongoose.connect('mongodb://localhost:27017/bot-dev', function () {
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var mongo = require(path.resolve('./engine2/utils/mongo-wrapper.js'));
 
 
 var flower_faqSchema = new Schema({

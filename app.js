@@ -9,9 +9,14 @@ mongoose.connect('mongodb://localhost:27017/bot-dev', function () {
 
 });
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
+// var mongoose = require('mongoose');
+// var Schema = mongoose.Schema;
+var flower_testSchema = new Schema({
+    "botId" : "String",
+    "name": "String",
+    "age": "String",
+    "sex": "String"
+});
 
 var flower_faqSchema = new Schema({
     "botId" : "String",

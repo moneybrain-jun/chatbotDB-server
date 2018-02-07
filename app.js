@@ -127,7 +127,7 @@ app.post('/api/:model/create', function (req, res) {
     else
         Model = mongoose.model(req.params.model, req.params.model + 'Schema');
 
-    var model = new Model(req.body);
+    var model = new Model(req.json);
 
     model.save(function (err, doc) {
         if(err)

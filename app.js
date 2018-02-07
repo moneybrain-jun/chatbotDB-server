@@ -1,13 +1,15 @@
 'use strict';
 
 var express = require('express');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
 var app = express();
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost:27017/bot-dev', function () {
-
-});
+app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(methodOverride());
 
 var models = {};
 
@@ -118,15 +120,6 @@ models.flower_serviceSchema = new Schema({
 
 
 
-app.listen(8443, function (err) {
-    if(err)
-    {
-        console.log(err);
-    }
-    console.log('server connected');
-});
-
-
 app.post('/api/:model/create', function (req, res) {
     var Model;
     if(mongoose.models[req.params.model])
@@ -211,5 +204,22 @@ app.post('/api/:model/delete', function (req, res) {
         }
         console.log(docs);
         res.json(docs);
+    });
+});
+
+
+
+
+
+mongoose.connect('mongodb://localhost:27017/bot-dev', function ()
+{
+    console.log('mongoose connected');
+    app.listen(8443, function (err)
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+        console.log('server connected');
     });
 });

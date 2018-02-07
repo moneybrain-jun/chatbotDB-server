@@ -133,7 +133,6 @@ app.post('/api/:model/create', function (req, res) {
         Model = mongoose.model(req.params.model, eval(req.params.model + 'Schema'));
 
     var model = new Model(req.json);
-
     model.save(function (err, doc) {
         if(err)
         {

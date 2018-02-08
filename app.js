@@ -13,22 +13,14 @@ app.use(methodOverride());
 
 var models = {};
 
-// var mongoose = require('mongoose');
-// var Schema = mongoose.Schema;
-models.flower_testSchema = new Schema({
-    "botId" : "String",
-    "name": "String",
-    "age": "String",
-    "sex": "String"
-});
 
+//------------------flower_template-------------------------------------------------------------------------flower_template---------------------
 models.flower_faqSchema = new Schema({
     "botId" : "String",
     "category": "String",
     "question": "String",
     "answer": "String"
 });
-
 
 models.flower_categorySchema = new Schema({
     "botId" : "String",
@@ -43,7 +35,6 @@ models.flower_categorySchema = new Schema({
     "VIP": "String",
     "status": "String"
 });
-
 
 models.flower_reservationSchema = new Schema({
     "botId" : "String",
@@ -111,12 +102,148 @@ models.flower_serviceSchema = new Schema({
     "status":"String"
 });
 
-// var faq = mongo.model('flower_faq', flower_faqSchema);
-// var category = mongo.model('flower_category', flower_categorySchema);
-// var order = mongo.model('flower_reservation', flower_reservationSchema);
-// var basic = mongo.model('flower_basic', flower_basicSchema);
-// var event = mongo.model('flower_event', flower_eventSchema);
-// var service = mongo.model('flower_service', flower_serviceSchema);
+//------------------flower_moneybrain--------------------------------------------------------------------------flower_moneybrain--------------
+models.flower_moneybrain_faqSchema = new Schema({
+    "category": "String",
+    "question": "String",
+    "answer": "String"
+});
+
+models.flower_moneybrain_categorySchema = new Schema({
+    "category": "String",
+    "name": "String",
+    "price": "String",//old:"Number"
+    "picture": "String",
+    "description": "String",
+    "code": "String",
+    "sale_price": "String",//old:"Number"
+    "delivery": "String",
+    "VIP": "String",
+    "status": "String"
+});
+
+models.flower_moneybrain_reservationSchema = new Schema({
+    "botId" : "String",
+    "name": "String",
+    "mobile": "String",
+    "itemname": "String",
+    "itemcode": "String",
+    "date": "String",
+    "hour": "String",
+    "time": "String",
+    "receivername": "String",
+    "receivermobile": "String",
+    "receiveraddress": "String",
+    "deliverydate": "String",
+    "deliveryhour": "String",
+    "deliverytime": "String",
+    "greeting": "String",
+    "sendername": "String",
+    "status": "String",
+    "price": "String", //old:"Number"
+    "itemimage": "String",
+    "itemnumber": "Number",
+    "email": "String",
+    "bride": "String",
+    "showtime": "String",
+    "deliveryway": "String",
+    "decorateway": "String",
+    "bill": "String",
+    "payway": "String",
+    "allprice": "String",//old:"Number"
+    "otherrequire": "String"
+});
+
+
+models.flower_moneybrain_userSchema = new Schema({
+    "botId":"String",
+    "name" : "String",
+    "mobile" : "String",
+    "email" : "String"
+});
+
+models.flower_moneybrain_greetingSchema = new Schema({
+    "category" : "String",
+    "decorate" : "String",
+    "word1" : "String",
+    "word2" : "String",
+    "word3" : "String",
+    "word4" : "String",
+    "word5" : "String",
+    "word6" : "String"
+});
+
+//------------------flower_flowermania--------------------------------------------------------------------------flower_flowermania-------------
+models.flower_flowermania_faqSchema = new Schema({
+    "category": "String",
+    "question": "String",
+    "answer": "String"
+});
+
+models.flower_flowermania_categorySchema = new Schema({
+    "category": "String",
+    "name": "String",
+    "price": "String",//old:"Number"
+    "picture": "String",
+    "description": "String",
+    "code": "String",
+    "sale_price": "String",//old:"Number"
+    "delivery": "String",
+    "VIP": "String",
+    "status": "String"
+});
+
+models.flower_flowermania_reservationSchema = new Schema({
+    "botId" : "String",
+    "name": "String",
+    "mobile": "String",
+    "itemname": "String",
+    "itemcode": "String",
+    "date": "String",
+    "hour": "String",
+    "time": "String",
+    "receivername": "String",
+    "receivermobile": "String",
+    "receiveraddress": "String",
+    "deliverydate": "String",
+    "deliveryhour": "String",
+    "deliverytime": "String",
+    "greeting": "String",
+    "sendername": "String",
+    "status": "String",
+    "price": "String", //old:"Number"
+    "itemimage": "String",
+    "itemnumber": "Number",
+    "email": "String",
+    "bride": "String",
+    "showtime": "String",
+    "deliveryway": "String",
+    "decorateway": "String",
+    "bill": "String",
+    "payway": "String",
+    "allprice": "String",//old:"Number"
+    "otherrequire": "String"
+});
+
+
+models.flower_flowermania_userSchema = new Schema({
+    "botId":"String",
+    "name" : "String",
+    "mobile" : "String",
+    "email" : "String"
+});
+
+models.flower_flowermania_greetingSchema = new Schema({
+    "category" : "String",
+    "decorate" : "String",
+    "word1" : "String",
+    "word2" : "String",
+    "word3" : "String",
+    "word4" : "String",
+    "word5" : "String",
+    "word6" : "String"
+});
+
 
 var getModel = function(modelName)
 {

@@ -132,7 +132,7 @@ var getModel = function(modelName)
 
 
 
-app.post('/api/:model', function (req, res)
+app.post('/api/:model', function (req, res)//create
 {
     var Model = getModel(req.params.model);
 
@@ -150,7 +150,7 @@ app.post('/api/:model', function (req, res)
     });
 });
 
-app.get('/api/:model', function (req, res)
+app.get('/api/:model', function (req, res)//read
 {
     var Model = getModel(req.params.model);
 
@@ -173,7 +173,7 @@ app.get('/api/:model', function (req, res)
     });
 });
 
-app.put('/api/:model', function (req, res)
+app.put('/api/:model', function (req, res)//update
 {
     var Model = getModel(req.params.model);
 
@@ -192,7 +192,7 @@ app.put('/api/:model', function (req, res)
 
 });
 
-app.delete('/api/:model', function (req, res)
+app.delete('/api/:model', function (req, res)//delete
 {
     var Model = getModel(req.params.model);
     Model.remove(req.body).exec(function(err, docs)

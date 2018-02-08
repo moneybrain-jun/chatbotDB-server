@@ -131,85 +131,79 @@ var getModel = function(modelName)
 };
 
 
-
-app.post('/api/:model', function (req, res)//create
-{
-    var Model = getModel(req.params.model);
-
-    var model = new Model(req.body);
-    model.save(function (err, doc)
+app.route('/api/:model')//create
+    .post(function (req, res)
     {
-        if(err)
+        var Model = getModel(req.params.model);
+
+        var model = new Model(req.body);
+        model.save(function (err, doc)
         {
-            console.log(err);
-            return res.status(500).send({ error: err });
+            if(err)
+            {
+                console.log(err);
+                return res.status(500).send({ error: err });
+            }
+
+            console.log(doc);
+            res.json(doc);
+        });
+    })
+    .get(function (req, res)//read
+    {
+        var Model = getModel(req.params.model);
+
+        var query = {};
+        for(var key in req.query)
+        {
+            query[key] = req.query[key];
         }
 
-        console.log(doc);
-        res.json(doc);
-    });
-});
-
-app.get('/api/:model', function (req, res)//read
-{
-    var Model = getModel(req.params.model);
-
-    var query = {};
-    for(var key in req.query)
-    {
-        query[key] = req.query[key];
-    }
-
-    Model.find(query).lean().exec(function(err, docs)
-    {
-        if(err)
+        Model.find(query).lean().exec(function(err, docs)
         {
-            console.log(err);
-            return res.status(500).send({ error: err });
-        }
+            if(err)
+            {
+                console.log(err);
+                return res.status(500).send({ error: err });
+            }
 
-        console.log(docs);
-        res.json(docs);
-    });
-});
-
-app.put('/api/:model', function (req, res)//update
-{
-    var Model = getModel(req.params.model);
-
-    Model.find(req.body).exec(function(err, docs)
+            console.log(docs);
+            res.json(docs);
+        });
+    })
+    .put(function (req, res)//update
     {
-        if(err)
+        var Model = getModel(req.params.model);
+
+        Model.find(req.body).exec(function(err, docs)
         {
-            console.log(err);
-            return res.status(500).send({ error: err });
-        }
+            if(err)
+            {
+                console.log(err);
+                return res.status(500).send({ error: err });
+            }
 
-        console.log(docs);
-        res.json(docs);
-    });
+            console.log(docs);
+            res.json(docs);
+        });
 
 
-});
-
-app.delete('/api/:model', function (req, res)//delete
-{
-    var Model = getModel(req.params.model);
-    Model.remove(req.body).exec(function(err, docs)
+    })
+    .delete(function (req, res)//delete
     {
-        if(err)
+        var Model = getModel(req.params.model);
+        Model.remove(req.body).exec(function(err, docs)
         {
-            console.log(err);
-            return res.status(500).send({ error: err });
-        }
+            if(err)
+            {
+                console.log(err);
+                return res.status(500).send({ error: err });
+            }
 
-        console.log(docs);
-        res.json(docs);
+            console.log(docs);
+            res.json(docs);
+        });
     });
-});
-
-
-
 
 
 mongoose.connect('mongodb://localhost:27017/bot-dev', function ()
